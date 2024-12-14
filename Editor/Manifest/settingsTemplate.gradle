@@ -1,0 +1,30 @@
+pluginManagement {
+    repositories {
+        **ARTIFACTORYREPOSITORY**
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+
+include ':launcher', ':unityLibrary'
+**INCLUDES**
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        **ARTIFACTORYREPOSITORY**
+        google()
+        mavenCentral()
+        // TapTap SDK
+        maven {
+            url "https://repo.maven.apache.org/maven2"
+        }
+        mavenLocal()
+        // TapTap SDK End
+
+        flatDir {
+            dirs "${project(':unityLibrary').projectDir}/libs"
+        }
+    }
+}

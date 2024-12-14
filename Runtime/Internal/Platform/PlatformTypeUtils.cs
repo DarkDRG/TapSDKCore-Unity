@@ -11,23 +11,25 @@ namespace TapSDK.Core.Internal {
         /// <param name="startWith"></param>
         /// <returns></returns>
         public static object CreatePlatformImplementationObject(Type interfaceType, string startWith) {
-            // Debug.Log($"Searching for types in assemblies starting with: {startWith} that implement: {interfaceType}");
 
             // 获取所有符合条件的程序集
             var assemblies = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(assembly => assembly.GetName().FullName.StartsWith(startWith));
 
-            // foreach (var assembly in assemblies) {
-                // Debug.Log($"Found assembly: {assembly.GetName().FullName}");
-            // }
-
             // 获取符合条件的类型
-            Type platformSupportType = assemblies
+            var platformSupportTypes = assemblies
                 .SelectMany(assembly => assembly.GetTypes())
-                .SingleOrDefault(clazz => interfaceType.IsAssignableFrom(clazz) && clazz.IsClass);
+                .Where(clazz => interfaceType.IsAssignableFrom(clazz) && clazz.IsClass);
 
+            // 返回对应平台的实现
+            // Unity Editor处于Android/iOS时使用Standalone进行Mock
+            #if UNITY_EDITOR || UNITY_STANDALONE
+            var platformSupportType = platformSupportTypes.SingleOrDefault(clazz => clazz.Name.Contains(Platform.STANDALONE));
+            #elif UNITY_ANDROID || UNITY_IOS
+            var platformSupportType = platformSupportTypes.SingleOrDefault(clazz => clazz.Name.Contains(Platform.MOBILE));
+            #endif
+            
             if (platformSupportType != null) {
-                // Debug.Log($"Found type: {platformSupportType.FullName}, creating instance...");
                 try
                 {
                     return Activator.CreateInstance(platformSupportType);

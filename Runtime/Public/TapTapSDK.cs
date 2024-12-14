@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Linq;
 using TapSDK.Core.Internal;
-using System.Collections.Generic;
-
-using UnityEngine;
-using System.Reflection;
 using TapSDK.Core.Internal.Init;
 using TapSDK.Core.Internal.Log;
-using System.ComponentModel;
 
 namespace TapSDK.Core {
     public class TapTapSDK {
@@ -36,7 +31,7 @@ namespace TapSDK.Core {
         public static void Init(TapTapSdkOptions coreOption) {
             if (coreOption == null)
                 throw new ArgumentException("[TapSDK] options is null!");
-            TapTapSDK.taptapSdkOptions = coreOption;
+            taptapSdkOptions = coreOption;
             TapLog.Enabled = coreOption.enableLog;
             platformWrapper?.Init(coreOption);
              // 初始化各个模块
@@ -58,12 +53,12 @@ namespace TapSDK.Core {
         public static void Init(TapTapSdkOptions coreOption, TapTapSdkBaseOptions[] otherOptions){
             if (coreOption == null)
                 throw new ArgumentException("[TapSDK] options is null!");
-            long startTime = DateTime.Now.Ticks;
-            TapTapSDK.taptapSdkOptions = coreOption;
+            // long startTime = DateTime.Now.Ticks;
+            taptapSdkOptions = coreOption;
             TapLog.Enabled = coreOption.enableLog;
-            long startCore = DateTime.Now.Ticks;
+            // long startCore = DateTime.Now.Ticks;
             platformWrapper?.Init(coreOption,otherOptions);
-            long costCore = DateTime.Now.Ticks - startCore;
+            // long costCore = DateTime.Now.Ticks - startCore;
             // TapLog.Log($"Init core cost time: {costCore / 10000}ms");
 
             Type[] initTaskTypes = GetInitTypeList();
@@ -75,13 +70,13 @@ namespace TapSDK.Core {
                 initTasks = initTasks.OrderBy(task => task.Order).ToList();
                 foreach (IInitTask task in initTasks) {
                     TapLog.Log($"Init: {task.GetType().Name}");
-                    long startModule = DateTime.Now.Ticks;
+                    // long startModule = DateTime.Now.Ticks;
                     task.Init(coreOption,otherOptions);
-                    long costModule = DateTime.Now.Ticks - startModule;
+                    // long costModule = DateTime.Now.Ticks - startModule;
                     // TapLog.Log($"Init {task.GetType().Name} cost time: {costModule / 10000}ms");
                 }
             }
-            long costTime = DateTime.Now.Ticks - startTime;
+            // long costTime = DateTime.Now.Ticks - startTime;
             // TapLog.Log($"Init cost time: {costTime / 10000}ms");
         }
 
@@ -93,7 +88,7 @@ namespace TapSDK.Core {
         private static Type[] GetInitTypeList(){
             Type interfaceType = typeof(IInitTask);
             Type[] initTaskTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(asssembly => asssembly.GetName().FullName.StartsWith("TapSDK"))
+                .Where(assembly => assembly.GetName().FullName.StartsWith("TapSDK"))
                 .SelectMany(assembly => assembly.GetTypes())
                 .Where(clazz => interfaceType.IsAssignableFrom(clazz) && clazz.IsClass)
                 .ToArray();

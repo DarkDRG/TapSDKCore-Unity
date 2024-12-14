@@ -1,5 +1,6 @@
 {
     "name": "TapSDK.Core.Standalone.Runtime",
+    "rootNamespace": "",
     "references": [
         "GUID:7d5ef2062f3704e1ab74aac0e4d5a1a7"
     ],
@@ -14,7 +15,9 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "UNITY_EDITOR || UNITY_STANDALONE"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }

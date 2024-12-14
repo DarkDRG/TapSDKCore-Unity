@@ -4,6 +4,9 @@ namespace TapSDK.Core
 {
     public class Platform
     {
+        public const string STANDALONE = "Standalone";
+        public const string MOBILE = "Mobile";
+        
         public static bool IsAndroid()
         {
             return Application.platform == RuntimePlatform.Android;

@@ -1,0 +1,54 @@
+apply plugin: 'com.android.library'
+**APPLY_PLUGINS**
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    // TapTap SDK
+    implementation 'com.taptap.sdk:tap-core-unity:4.5.1'
+    
+    // TapTap Login
+    implementation 'com.taptap.sdk:tap-login-unity:4.5.1'
+
+    // TapTap IAP
+    implementation 'com.taptap.android.payment:unity:4.5.1'
+    implementation 'com.taptap.android.payment:stripe:4.5.1'
+    implementation 'com.taptap.android.payment:alipay:4.5.1'
+    implementation 'com.taptap.android.payment:braintree:4.5.1'
+    implementation 'com.taptap.android.payment:alipaycn:4.5.1'
+    implementation 'com.taptap.android.payment:wechat:4.5.1'
+**DEPS**}
+
+android {
+    namespace "com.unity3d.player"
+
+    compileSdkVersion **APIVERSION**
+    buildToolsVersion '**BUILDTOOLS**'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    defaultConfig {
+        minSdkVersion 33 //使用34会触发RECEIVER_EXPORTED or RECEIVER_NOT_EXPORTED 相关错误
+        targetSdkVersion 33
+        ndk {
+            abiFilters **ABIFILTERS**
+        }
+        versionCode **VERSIONCODE**
+        versionName '**VERSIONNAME**'
+        consumerProguardFiles 'proguard-unity.txt'**USER_PROGUARD**
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    aaptOptions {
+        noCompress = **BUILTIN_NOCOMPRESS** + unityStreamingAssets.tokenize(', ')
+        ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"
+    }**PACKAGING_OPTIONS**
+}
+**IL_CPP_BUILD_SETUP**
+**SOURCE_BUILD_SETUP**
+**EXTERNAL_SOURCES**
