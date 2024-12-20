@@ -1,3 +1,17 @@
-﻿{
-	"name": "TapSDK.Core.Runtime"
+{
+    "name": "TapSDK.Core.Runtime",
+    "rootNamespace": "",
+    "references": [],
+    "includePlatforms": [
+        "Android",
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
